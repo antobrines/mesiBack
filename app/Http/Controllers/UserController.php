@@ -21,13 +21,11 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
-        //dd($request);
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'created_at' => now()
+            'password' => Hash::make($request->password)
         ]);
 
         return $user;
