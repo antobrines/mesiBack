@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Adress;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -35,9 +33,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function adresses()
+    public function addresses()
     {
-        return $this->hasMany(Adress::class);
+        //hasMany ?
+        return $this->hasOne(Address::class);
     }
 
     /**

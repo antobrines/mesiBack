@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function getAllUsers()
     {
-        return User::all();
+        return User::paginate(2);
     }
 
     public function getUserByRequest(Request $request)
@@ -28,6 +28,6 @@ class UserController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        return $user;
+        return response($user, 200);
     }
 }
