@@ -2,24 +2,22 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Address extends Model
+class Product extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'country',
-        'city',
-        'postal_code',
-        'street',
-        'type',
+        'name',
+        'price_ht',
+        'description',
+        'stock',
         'user_id'
     ];
 
-    public function user()
+    public function user_product()
     {
         return $this->belongsTo(User::class);
     }

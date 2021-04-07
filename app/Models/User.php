@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Role;
 use App\Models\Address;
+use App\Models\Product;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,6 +45,11 @@ class User extends Authenticatable
     {
         //hasMany ?
         return $this->hasOne(Address::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 
     /**

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,10 @@ route::post('/new/address', [AddressController::class, 'store']);
 route::get('/address/{id}', [AddressController::class, 'show']);
 route::post('/address/{id}', [AddressController::class, 'update']);
 route::delete('/address/{id}', [AddressController::class, 'destroy']);
+
+//Products
+route::get('/products', [ProductController::class, 'index']);
+route::post('/new/product', [ProductController::class, 'store']);
+route::get('/product/{id}', [ProductController::class, 'show']);
+route::post('/product/{id}', [ProductController::class, 'update']);
+route::delete('/product/{id}', [ProductController::class, 'destroy']);

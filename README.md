@@ -60,3 +60,13 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Documentation
+
+# Creation d'une hasOne / hasMany
+
+- Création de la migration avec le modèle : php artisan make:model nameModele -m
+- Modifier la migration créé et ajouter (voir les migrations précedente)
+- Ajouter le belongsTo et le hasMane/hasOne dans les modeles
+- Créer un seeder pour créer des données : php artisan make:seed NameTableSeeder
+- Faire la migration avec les données crée : php artisan migrate --seed

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Address;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class AddressController extends Controller
+class ProductController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:api');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +20,12 @@ class AddressController extends Controller
      */
     public function index(Request $request)
     {
-        return $request->user()->addresses;
+        $data = [
+            'data' => $request->user()->products()->paginate(4),
+            'message' => null
+        ];
+        $code_response = 200;
+        return response()->json($data, $code_response);;
     }
 
     /**
@@ -33,29 +39,28 @@ class AddressController extends Controller
         $user = $request->user();
 
         $validator = Validator::make($request->all(), [
-            'country' => 'required|string',
-            'city' => 'required|string',
-            'postal_code' => 'required|string|max:5|min:5',
-            'street' => 'required|string',
-            'type' => 'in:idk1,idk2'
+            'name' => 'required|string',
+            'price_ht' => 'required|integer',
+            'description' => 'required|string|min:5',
+            'stock' => 'required|string',
+            'user_id' => 'nullable'
         ]);
 
         if ($validator->fails()) {
             return $validator->getMessageBag();
         }
 
-        $adress = Address::create([
-            'country' => $request->country,
-            'city' => $request->city,
-            'postal_code' => $request->postal_code,
-            'street' => $request->street,
-            'type' => $request->type,
+        $product = Product::create([
+            'name' => $request->name,
+            'price_ht' => $request->price_ht,
+            'description' => $request->description,
+            'stock' => $request->stock,
             'user_id' => $user->id
         ]);
 
         $data = [
-            'data' => $adress,
-            'message' => "L'adresse a bien été créée !"
+            'data' => $product,
+            'message' => "Le produit a bien été créé"
         ];
 
         return response()->json($data, 201);
@@ -64,25 +69,18 @@ class AddressController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        $adress = Address::find($id);
-        $user = $request->user();
+        $adress = Product::find($id);
 
         if (is_null($adress)) {
             $data = [
-                'message' => "L'adresse n'existe pas !"
+                'message' => "Le produit n'existe pas !"
             ];
             $code_response = 404;
-        } elseif ($user->id !== $adress->user_id) {
-            $data = [
-                'message' => "L'adresse ne vous appartient pas !"
-            ];
-            $code_response = 403;
         } else {
             $data = [
                 'data' => $adress,
@@ -103,15 +101,14 @@ class AddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $adress = Address::find($id);
+        $adress = Product::find($id);
         $user = $request->user();
 
         $validator = Validator::make($request->all(), [
-            'country' => 'required|string',
-            'city' => 'required|string',
-            'postal_code' => 'required|string|max:5|min:5',
-            'street' => 'required|string',
-            'type' => 'in:idk1,idk2',
+            'name' => 'required|string',
+            'price_ht' => 'required|integer',
+            'description' => 'required|string|min:5',
+            'stock' => 'required|string',
             'user_id' => 'nullable'
         ]);
         if ($validator->fails()) {
@@ -120,12 +117,12 @@ class AddressController extends Controller
 
         if (is_null($adress)) {
             $data = [
-                'message' => "L'adresse n'existe pas !"
+                'message' => "Le produit n'existe pas !"
             ];
             $code_response = 404;
         } elseif ($user->id !== $adress->user_id) {
             $data = [
-                'message' => "L'adresse ne vous appartient pas !"
+                'message' => "Le produit ne vous appartient pas !"
             ];
             $code_response = 403;
         } else {
@@ -142,27 +139,27 @@ class AddressController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * 
-     * @param  \Illuminate\Http\Request  $request
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)
     {
-        $adress = Address::find($id);
+        $adress = Product::find($id);
         $user = $request->user();
+
         if (is_null($adress)) {
             $data = [
-                'message' => "L'adresse n'existe pas !"
+                'message' => "Le produit n'existe pas !"
             ];
             $code_response = 404;
         } elseif ($user->id !== $adress->user_id) {
             $data = [
-                'message' => "L'adresse ne vous appartient pas !"
+                'message' => "Le produit ne vous appartient pas !"
             ];
             $code_response = 403;
         } else {
-            Address::find($id)->delete();
+            Product::find($id)->delete();
             $data = [
                 'message' => "La supression à bien été effectuée"
             ];
