@@ -43,7 +43,6 @@ class User extends Authenticatable
 
     public function addresses()
     {
-        //hasMany ?
         return $this->hasOne(Address::class);
     }
 
@@ -60,4 +59,28 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function hasRole($role)
+    {
+        if ($this->roles()->where('name', $role)->first()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hasAnyRoles($roles)
+    {
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if ($this->hasRole($role)) {
+                    return true;
+                }
+            }
+        } else {
+            if ($this->hasRole($roles)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
