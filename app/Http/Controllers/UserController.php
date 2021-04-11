@@ -175,6 +175,9 @@ class UserController extends Controller
             if (File::exists(public_path('profile_image/' . $userImage))) {
                 File::delete(public_path('profile_image/' . $userImage));
             }
+            $user->addresses()->delete();
+            $user->products()->delete();
+            $user->roles()->detach();
             $user->delete();
             $data = [
                 'message' => "La supression a bien été effectuée"

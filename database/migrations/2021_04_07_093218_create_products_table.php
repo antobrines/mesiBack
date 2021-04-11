@@ -25,8 +25,8 @@ class CreateProductsTable extends Migration
 
         Schema::table('products', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
