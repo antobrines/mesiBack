@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->float('price_ht');
             $table->string('description');
             $table->integer('stock');
-            $table->integer('user_id')->unsigned();
+            $table->BigInteger('user_id')->unsigned()->index();
             $table->timestamps();
         });
 
