@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ProductController;
@@ -19,13 +20,24 @@ use App\Http\Controllers\ProductController;
 
 // Middleware for admin
 Route::middleware(['auth:api', 'roles:admin'])->group(function () {
-	route::get('/users', [UserController::class, 'getAllUsers']);
+	// User
+	route::get('/users', [UserController::class, 'index']);
+
+	// Role
+	route::get('/roles', [RoleController::class, 'index']); // Pagination
+	route::post('/new/role', [RoleController::class, 'store']);
+	route::get('/role/{id}', [RoleController::class, 'show']);
+	route::post('/role/{id}', [RoleController::class, 'update']);
+	route::delete('/role/{id}', [RoleController::class, 'destroy']);
 });
 
 // Middleware for user
 Route::middleware(['auth:api', 'roles:user,admin'])->group(function () {
 	// User
 	route::get('/user', [UserController::class, 'getUserByRequest']);
+	route::get('/user/{id}', [UserController::class, 'show']);
+	route::post('/user/{id}', [UserController::class, 'update']);
+	route::delete('/user/{id}', [UserController::class, 'destroy']);
 
 	// Adress
 	route::get('/addresses', [AddressController::class, 'index']);
@@ -34,7 +46,7 @@ Route::middleware(['auth:api', 'roles:user,admin'])->group(function () {
 	route::post('/address/{id}', [AddressController::class, 'update']);
 	route::delete('/address/{id}', [AddressController::class, 'destroy']);
 
-	//Products
+	// Products
 	route::get('/products', [ProductController::class, 'index']);
 	route::post('/new/product', [ProductController::class, 'store']);
 	route::get('/product/{id}', [ProductController::class, 'show']);
@@ -43,4 +55,4 @@ Route::middleware(['auth:api', 'roles:user,admin'])->group(function () {
 });
 
 
-Route::post('/register', [UserController::class, 'create']);
+Route::post('/new/user', [UserController::class, 'store']);

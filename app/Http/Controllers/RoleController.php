@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ProductController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $data = [
-            'data' => $request->user()->products()->paginate(4),
+            'data' => Role::paginate(10),
             'message' => null
         ];
         $code_response = 200;
@@ -31,31 +31,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $request->user();
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'price_ht' => 'required|integer',
-            'description' => 'required|string|min:5',
-            'stock' => 'required|string',
-            'user_id' => 'nullable'
+            'description' => 'required|string|'
         ]);
 
         if ($validator->fails()) {
             return $validator->getMessageBag();
         }
 
-        $product = Product::create([
+        $role = Role::create([
             'name' => $request->name,
-            'price_ht' => $request->price_ht,
-            'description' => $request->description,
-            'stock' => $request->stock,
-            'user_id' => $user->id
+            'description' => $request->description
         ]);
 
         $data = [
-            'data' => $product,
-            'message' => "Le produit a bien été créé"
+            'data' => $role,
+            'message' => "Le role a bien été créé"
         ];
 
         return response()->json($data, 201);
@@ -69,16 +61,16 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
+        $role = Role::find($id);
 
-        if (is_null($product)) {
+        if (is_null($role)) {
             $data = [
-                'message' => "Le produit n'existe pas !"
+                'message' => "Le role n'existe pas !"
             ];
             $code_response = 404;
         } else {
             $data = [
-                'data' => $product,
+                'data' => $role,
                 'message' => null
             ];
             $code_response = 200;
@@ -96,34 +88,25 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-        $user = $request->user();
+        $role = Role::find($id);
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'price_ht' => 'required|integer',
-            'description' => 'required|string|min:5',
-            'stock' => 'required|string',
-            'user_id' => 'nullable'
+            'description' => 'required|string|'
         ]);
         if ($validator->fails()) {
             return $validator->getMessageBag();
         }
 
-        if (is_null($product)) {
+        if (is_null($role)) {
             $data = [
-                'message' => "Le produit n'existe pas !"
+                'message' => "Le role n'existe pas !"
             ];
             $code_response = 404;
-        } elseif ($user->id !== $product->user_id) {
-            $data = [
-                'message' => "Le produit ne vous appartient pas !"
-            ];
-            $code_response = 403;
         } else {
-            $product->update($request->all());
+            $role->update($request->all());
             $data = [
-                'data' => $product,
+                'data' => $role,
                 'message' => "La modification à bien été effectuée"
             ];
             $code_response = 200;
@@ -138,25 +121,19 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $product = Product::find($id);
-        $user = $request->user();
+        $role = Role::find($id);
 
-        if (is_null($product)) {
+        if (is_null($role)) {
             $data = [
-                'message' => "Le produit n'existe pas !"
+                'message' => "Le role n'existe pas !"
             ];
             $code_response = 404;
-        } elseif ($user->id !== $product->user_id) {
-            $data = [
-                'message' => "Le produit ne vous appartient pas !"
-            ];
-            $code_response = 403;
         } else {
-            $product->delete();
+            $role->delete();
             $data = [
-                'message' => "La supression à bien été effectuée"
+                'message' => "La supression a bien été effectuée"
             ];
             $code_response = 200;
         }
