@@ -155,11 +155,40 @@ class ProductController extends Controller
             $code_response = 403;
         } else {
             $product->delete();
+            $product->images()->delete();
             $data = [
                 'message' => "La supression à bien été effectuée"
             ];
             $code_response = 200;
         }
+        return response()->json($data, $code_response);
+    }
+
+
+    /**
+     * return the product's image.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getImagesByProduct(Request $request, $id){
+
+        $product = Product::find($id);
+        // dd($product);
+
+        if (is_null($product)) {
+            $data = [
+                'message' => "Le produit n'existe pas !"
+            ];
+            $code_response = 404;
+        } else {
+        $data = [
+            'data' => $product->images()->paginate(10),
+            'message' => null
+        ];
+    }
+    dd($data);
+        $code_response = 200;
         return response()->json($data, $code_response);
     }
 }
