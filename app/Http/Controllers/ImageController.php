@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use File;
@@ -110,18 +111,25 @@ class ImageController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        //récupère l'image en fonction de l'id passé en paramètres
         $image = Image::find($id);
-
+        //Récupère l'id de l'utilisateur connecté
+        $user = $request->user()->id;
+        //Récupère l'id du produit
+        $productId = $image->product_id;
+        //Récupère l'id de l'utilisateur ayant mis en ligne le produit
+        $productUser = Product::find($productId)->user_id;
+       
         if (is_null($image)) {
             $data = [
                 'message' => "L'image n'existe pas !"
             ];
             $code_response = 404;
-        // } elseif ($request->image()->id != $id) {
-        //     $data = [
-        //         'message' => "L'image ne vous appartient pas !"
-        //     ];
-        //     $code_response = 403;
+         } elseif ($user != $productUser) {
+             $data = [
+                 'message' => "L'image ne vous appartient pas !"
+             ];
+             $code_response = 403;
         } else {
             $productImage = $image->image_url;
             if (File::exists(public_path('image_url/' . $productImage))) {
