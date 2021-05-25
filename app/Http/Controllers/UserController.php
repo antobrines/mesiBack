@@ -34,13 +34,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6',
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required|min:6|same:password',
+            'phone_number'=>'nullable|string',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
         if ($validator->fails()) {
             return $validator->getMessageBag();
         }
@@ -51,12 +56,12 @@ class UserController extends Controller
             $request->profile_image->move(public_path('profile_image'), $imageName);
         }
 
-
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'phone_number'=>$request->phone_number,
             'profile_image' => $imageName
         ]);
         $user->roles()->attach(Role::where('name', 'user')->first());

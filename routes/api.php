@@ -6,7 +6,11 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ProductController;
+<<<<<<< HEAD
 use App\Http\Controllers\CategoryController;
+=======
+use App\Http\Controllers\ImageController;
+>>>>>>> 71fed2289f0838f4f18d958c77e4359b3c74237e
 
 /*
 |--------------------------------------------------------------------------
@@ -56,7 +60,18 @@ Route::middleware(['auth:api', 'roles:user,admin'])->group(function () {
 	route::post('/new/product', [ProductController::class, 'store']);
 	route::post('/product/{id}', [ProductController::class, 'update']);
 	route::delete('/product/{id}', [ProductController::class, 'destroy']);
+<<<<<<< HEAD
 
+=======
+	route::get('/product/{id}/image', [ProductController::class, 'getimagesByProduct']);
+
+	// Image
+	route::get('/image', [ImageController::class, 'index']); //ok
+	route::post('/new/image', [ImageController::class, 'store']); //ok
+	route::get('/image/{id}', [ImageController::class, 'show']); //ok
+	route::post('/image/{id}', [ImageController::class, 'update']);
+	route::delete('/image/{id}', [ImageController::class, 'destroy']);
+>>>>>>> 71fed2289f0838f4f18d958c77e4359b3c74237e
 });
 
 
