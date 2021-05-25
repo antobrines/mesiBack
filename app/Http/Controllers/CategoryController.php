@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $data = [
-            'data' => $request->user()->products()->paginate(4),
+            'data' => Category::paginate(10),
             'message' => null
         ];
         $code_response = 200;
@@ -31,31 +31,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $request->user();
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'price_ht' => 'required|integer',
-            'description' => 'required|string|min:5',
-            'stock' => 'required|string',
-            'user_id' => 'nullable'
+            'image' => 'required|string|'
         ]);
 
         if ($validator->fails()) {
             return $validator->getMessageBag();
         }
 
-        $product = Product::create([
+        $category = Category::create([
             'name' => $request->name,
-            'price_ht' => $request->price_ht,
-            'description' => $request->description,
-            'stock' => $request->stock,
-            'user_id' => $user->id
+            'image' => $request->image
         ]);
 
         $data = [
-            'data' => $product,
-            'message' => "Le produit a bien été créé"
+            'data' => $category,
+            'image' => "La catégorie a bien été créé"
         ];
 
         return response()->json($data, 201);
@@ -69,16 +61,16 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
+        $category = Category::find($id);
 
-        if (is_null($product)) {
+        if (is_null($category)) {
             $data = [
-                'message' => "Le produit n'existe pas !"
+                'message' => "La catégorie n'existe pas !"
             ];
             $code_response = 404;
         } else {
             $data = [
-                'data' => $product,
+                'data' => $category,
                 'message' => null
             ];
             $code_response = 200;
@@ -96,34 +88,25 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-        $user = $request->user();
+        $category = Category::find($id);
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'price_ht' => 'required|integer',
-            'description' => 'required|string|min:5',
-            'stock' => 'required|string',
-            'user_id' => 'nullable'
+            'image' => 'required|string|'
         ]);
         if ($validator->fails()) {
             return $validator->getMessageBag();
         }
 
-        if (is_null($product)) {
+        if (is_null($category)) {
             $data = [
-                'message' => "Le produit n'existe pas !"
+                'message' => "La catégorie n'existe pas !"
             ];
             $code_response = 404;
-        } elseif ($user->id !== $product->user_id) {
-            $data = [
-                'message' => "Le produit ne vous appartient pas !"
-            ];
-            $code_response = 403;
         } else {
-            $product->update($request->all());
+            $category->update($request->all());
             $data = [
-                'data' => $product,
+                'data' => $category,
                 'message' => "La modification à bien été effectuée"
             ];
             $code_response = 200;
@@ -138,33 +121,23 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $product = Product::find($id);
-        $user = $request->user();
+        $category = Category::find($id);
 
-        if (is_null($product)) {
+        if (is_null($category)) {
             $data = [
-                'message' => "Le produit n'existe pas !"
+                'message' => "La catégorie n'existe pas !"
             ];
             $code_response = 404;
-        } elseif ($user->id !== $product->user_id) {
-            $data = [
-                'message' => "Le produit ne vous appartient pas !"
-            ];
-            $code_response = 403;
         } else {
-            $product->delete();
+            $category->delete();
             $data = [
-                'message' => "La supression à bien été effectuée"
+                'message' => "La supression a bien été effectuée"
             ];
             $code_response = 200;
         }
         return response()->json($data, $code_response);
     }
 
-    public function getCategoriesProduct(Request $request, $id) {
-        $product = Product::find($id);
-        return $product->categories()->get();
-    }
 }

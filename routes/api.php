@@ -6,6 +6,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,11 @@ Route::middleware(['auth:api', 'roles:admin'])->group(function () {
 	route::get('/role/{id}', [RoleController::class, 'show']);
 	route::post('/role/{id}', [RoleController::class, 'update']);
 	route::delete('/role/{id}', [RoleController::class, 'destroy']);
+
+	// Category
+	route::post('/new/category', [CategoryController::class, 'store']);
+	route::post('/category/{id}', [CategoryController::class, 'update']);
+	route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 });
 
 // Middleware for user
@@ -47,12 +53,16 @@ Route::middleware(['auth:api', 'roles:user,admin'])->group(function () {
 	route::delete('/address/{id}', [AddressController::class, 'destroy']);
 
 	// Products
-	route::get('/products', [ProductController::class, 'index']);
 	route::post('/new/product', [ProductController::class, 'store']);
-	route::get('/product/{id}', [ProductController::class, 'show']);
 	route::post('/product/{id}', [ProductController::class, 'update']);
 	route::delete('/product/{id}', [ProductController::class, 'destroy']);
+
 });
 
 
 Route::post('/new/user', [UserController::class, 'store']);
+route::get('/categories', [CategoryController::class, 'index']);
+route::get('/category/{id}', [CategoryController::class, 'show']);
+route::get('/products', [ProductController::class, 'index']);
+route::get('/product/{id}', [ProductController::class, 'show']);
+route::get('/product/{id}/categories', [ProductController::class, 'getCategoriesProduct']);

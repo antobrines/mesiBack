@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\RoleTableSeeder;
 use Database\Seeders\UserTableSeeder;
 use Database\Seeders\ProductTableSeeder;
+use Database\Seeders\CategoryTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call(RoleTableSeeder::class);
         $this->call(UserTableSeeder::class);
+        $this->call(CategoryTableSeeder::class);
         $this->call(ProductTableSeeder::class);
         $this->call(AdressesTableSeeder::class);
     }
