@@ -15,8 +15,9 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $products = Product::paginate(5);
         $data = [
-            'data' => $request->user()->products()->paginate(4),
+            'data' => $products,
             'message' => null
         ];
         $code_response = 200;
