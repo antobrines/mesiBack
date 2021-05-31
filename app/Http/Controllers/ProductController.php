@@ -167,6 +167,7 @@ class ProductController extends Controller
     public function getCategoriesProduct(Request $request, $id) {
         $product = Product::find($id);
         return $product->categories()->get();
+    }  
 
     /**
      * return the product's image.
