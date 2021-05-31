@@ -57,14 +57,12 @@ Route::middleware(['auth:api', 'roles:user,admin'])->group(function () {
 	route::post('/new/product', [ProductController::class, 'store']);
 	route::post('/product/{id}', [ProductController::class, 'update']);
 	route::delete('/product/{id}', [ProductController::class, 'destroy']);
-
 	route::get('/product/{id}/image', [ProductController::class, 'getimagesByProduct']);
 
 	// Image
-	route::get('/image', [ImageController::class, 'index']); //ok
-	route::post('/new/image', [ImageController::class, 'store']); //ok
-	route::get('/image/{id}', [ImageController::class, 'show']); //ok
-	route::post('/image/{id}', [ImageController::class, 'update']);
+	route::get('/image', [ImageController::class, 'index']); 
+	route::post('/new/image', [ImageController::class, 'store']); 
+	route::get('/image/{id}', [ImageController::class, 'show']); 
 	route::delete('/image/{id}', [ImageController::class, 'destroy']);
 });
 
