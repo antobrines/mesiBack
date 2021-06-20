@@ -8,6 +8,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ use App\Http\Controllers\ImageController;
 */
 
 // Middleware for admin
-Route::middleware(['auth:api', 'roles:admin'])->group(function () {
+Route::middleware(['auth:api', 'roles:admin', 'verified'])->group(function () {
 	// User
 	route::get('/users', [UserController::class, 'index']);
 
@@ -39,7 +40,7 @@ Route::middleware(['auth:api', 'roles:admin'])->group(function () {
 });
 
 // Middleware for user
-Route::middleware(['auth:api', 'roles:user,admin'])->group(function () {
+Route::middleware(['auth:api', 'roles:user,admin', 'verified'])->group(function () {
 	// User
 	route::get('/user', [UserController::class, 'getUserByRequest']);
 	route::get('/user/{id}', [UserController::class, 'show']);
@@ -60,9 +61,9 @@ Route::middleware(['auth:api', 'roles:user,admin'])->group(function () {
 	route::get('/product/{id}/image', [ProductController::class, 'getimagesByProduct']);
 
 	// Image
-	route::get('/image', [ImageController::class, 'index']); 
-	route::post('/new/image', [ImageController::class, 'store']); 
-	route::get('/image/{id}', [ImageController::class, 'show']); 
+	route::get('/image', [ImageController::class, 'index']);
+	route::post('/new/image', [ImageController::class, 'store']);
+	route::get('/image/{id}', [ImageController::class, 'show']);
 	route::delete('/image/{id}', [ImageController::class, 'destroy']);
 });
 
@@ -73,3 +74,6 @@ route::get('/category/{id}', [CategoryController::class, 'show']);
 route::get('/products', [ProductController::class, 'index']);
 route::get('/product/{id}', [ProductController::class, 'show']);
 route::get('/product/{id}/categories', [ProductController::class, 'getCategoriesProduct']);
+
+route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+route::get('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');

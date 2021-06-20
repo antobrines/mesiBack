@@ -40,10 +40,9 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6|same:password',
-            'phone_number'=>'nullable|string',
+            'phone_number' => 'nullable|string',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
-
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
@@ -55,20 +54,22 @@ class UserController extends Controller
             $imageName = time() . '.' . $request->profile_image->extension();
             $request->profile_image->move(public_path('profile_image'), $imageName);
         }
-
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'phone_number'=>$request->phone_number,
+            'phone_number' => $request->phone_number,
             'profile_image' => $imageName
         ]);
         $user->roles()->attach(Role::where('name', 'user')->first());
+
         $data = [
             'data' => $user,
-            'message' => "Le profil a bien été créé"
+            'message' => "Votre compte a bien été créé, un email de confirmation vous a été envoyé"
         ];
+
+        $user->sendEmailVerificationNotification();
 
         return response()->json($data, 201);
     }
