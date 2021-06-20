@@ -179,7 +179,6 @@ class ProductController extends Controller
     public function getImagesByProduct(Request $request, $id){
 
         $product = Product::find($id);
-        // dd($product);
 
         if (is_null($product)) {
             $data = [
@@ -192,7 +191,6 @@ class ProductController extends Controller
             'message' => null
         ];
     }
-    dd($data);
         $code_response = 200;
         return response()->json($data, $code_response);
     }

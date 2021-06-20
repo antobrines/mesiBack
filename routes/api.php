@@ -58,7 +58,6 @@ Route::middleware(['auth:api', 'roles:user,admin', 'verified'])->group(function 
 	route::post('/new/product', [ProductController::class, 'store']);
 	route::post('/product/{id}', [ProductController::class, 'update']);
 	route::delete('/product/{id}', [ProductController::class, 'destroy']);
-	route::get('/product/{id}/image', [ProductController::class, 'getimagesByProduct']);
 
 	// Image
 	route::get('/image', [ImageController::class, 'index']);
@@ -74,6 +73,7 @@ route::get('/category/{id}', [CategoryController::class, 'show']);
 route::get('/products', [ProductController::class, 'index']);
 route::get('/product/{id}', [ProductController::class, 'show']);
 route::get('/product/{id}/categories', [ProductController::class, 'getCategoriesProduct']);
+route::get('/product/{id}/image', [ProductController::class, 'getimagesByProduct']);
 
 route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 route::get('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
