@@ -70,6 +70,8 @@ Route::middleware(['auth:api', 'roles:user,admin', 'verified'])->group(function 
 Route::post('/new/user', [UserController::class, 'store']);
 route::get('/categories', [CategoryController::class, 'index']);
 route::get('/category/{id}', [CategoryController::class, 'show']);
+route::get('/category/{id}/products', [CategoryController::class, 'getProductByCategories']);
+
 route::get('/products', [ProductController::class, 'index']);
 route::get('/product/{id}', [ProductController::class, 'show']);
 route::get('/product/{id}/categories', [ProductController::class, 'getCategoriesProduct']);
