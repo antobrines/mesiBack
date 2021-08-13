@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('description');
             $table->integer('stock');
             $table->BigInteger('user_id')->unsigned()->index();
+            $table->string('product_image')->nullable();
             $table->timestamps();
         });
 

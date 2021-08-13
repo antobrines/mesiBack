@@ -14,7 +14,8 @@ class Product extends Model
         'price_ht',
         'description',
         'stock',
-        'user_id'
+        'user_id',
+        'product_image'
     ];
 
     public function user_product()
