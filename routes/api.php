@@ -67,14 +67,16 @@ Route::middleware(['auth:api', 'roles:user,admin', 'verified'])->group(function 
 });
 
 
-Route::post('/new/user', [UserController::class, 'store']);
+route::post('/new/user', [UserController::class, 'store']);
 route::get('/categories', [CategoryController::class, 'index']);
 route::get('/category/{id}', [CategoryController::class, 'show']);
 route::get('/category/{id}/products', [CategoryController::class, 'getProductByCategories']);
 
 route::get('/products', [ProductController::class, 'index']);
+route::get('/products/search/{name}', [ProductController::class, 'searchByName']);
 route::get('/product/{id}', [ProductController::class, 'show']);
 route::get('/product/{id}/categories', [ProductController::class, 'getCategoriesProduct']);
+route::get('/product/{id}/image', [ProductController::class, 'getimagesByProduct']);
 route::get('/product/{id}/image', [ProductController::class, 'getimagesByProduct']);
 
 route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');

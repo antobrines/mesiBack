@@ -128,7 +128,7 @@ class UserController extends Controller
             $code_response = 404;
         } elseif ($request->user()->id != $id) {
             $data = [
-                'message' => "L'utilisater ne vous appartient pas !"
+                'message' => "L'utilisateur ne vous appartient pas !"
             ];
             $code_response = 403;
         } else {

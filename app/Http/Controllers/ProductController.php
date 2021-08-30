@@ -221,4 +221,36 @@ class ProductController extends Controller
         $code_response = 200;
         return response()->json($data, $code_response);
     }
+
+        /**
+     * Display the specified resource.
+     *
+     * @param  string 
+     * @return \Illuminate\Http\Response
+     */
+    public function searchByName(Request $request,$name)
+    {
+        $products = Product::where([
+            ['name', 'LIKE', '%' . $name . '%']
+        ])
+            ->orderBy("id", "desc")
+            ->paginate(10);
+
+        if (is_null($products)) {
+            $data = [
+                'message' => "Pas de résultat !"
+            ];
+            $code_response = 404;
+        } else {
+            $data = [
+                'data' => $products,
+                'message' => null
+            ];
+            $code_response = 200;
+        }
+
+        return response()->json($data, $code_response);
+    }
+
+
 }
