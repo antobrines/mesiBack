@@ -64,10 +64,13 @@ Route::middleware(['auth:api', 'roles:user,admin', 'verified'])->group(function 
 	route::post('/new/image', [ImageController::class, 'store']);
 	route::get('/image/{id}', [ImageController::class, 'show']);
 	route::delete('/image/{id}', [ImageController::class, 'destroy']);
+
+	route::any('/userads', [UserController::class, 'getUserAds']);
 });
 
 
 route::post('/new/user', [UserController::class, 'store']);
+
 route::get('/categories', [CategoryController::class, 'index']);
 route::get('/category/{id}', [CategoryController::class, 'show']);
 route::get('/category/{id}/products', [CategoryController::class, 'getProductByCategories']);

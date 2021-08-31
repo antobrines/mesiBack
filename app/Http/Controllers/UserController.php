@@ -197,4 +197,18 @@ class UserController extends Controller
     {
         return $request->user();
     }
+
+    public function getUserAds(Request $request) {
+        //$user = User::find($id);
+        $user = $request->user();
+        //return $user->products()->get();
+
+        $data = [
+            'data' => $user->products()->get(),
+            'message' => null
+        ];
+
+        $code_response = 200;
+        return response()->json($data, $code_response);
+    }  
 }

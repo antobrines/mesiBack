@@ -39,7 +39,7 @@ class ProductController extends Controller
             'name' => 'required|string',
             'price_ht' => 'required|integer',
             'description' => 'required|string|min:5',
-            'stock' => 'required|string',
+            'stock' => 'required|integer',
             'user_id' => 'nullable',
             'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
@@ -113,10 +113,13 @@ class ProductController extends Controller
             'name' => 'required|string',
             'price_ht' => 'required|integer',
             'description' => 'required|string|min:5',
-            'stock' => 'required|string',
+            'stock' => 'required|integer',
             'user_id' => 'nullable',
             'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+
+        
+
         if ($validator->fails()) {
             return $validator->getMessageBag();
         }
@@ -134,17 +137,17 @@ class ProductController extends Controller
         } else {
             $imageName = null;
             $productImage = $product->product_image;
-            if (!is_null($product_image) && $request->product_image != null) {
+            if (!is_null($productImage) && $request->product_image != null) {
                 if (File::exists(public_path('product_image/' . $productImage))) {
                     File::delete(public_path('product_image/' . $productImage));
                 }
-            }
-            $data = $request->all();
+            }  
             if ($request->product_image != null) {
                 $imageName = time() . '.' . $request->product_image->extension();
                 $request->product_image->move(public_path('product_image'), $imageName);
                 $data['product_image'] = $imageName;
-            }
+            } 
+            $data = $request->all();
             $product->update($data);
             $data = [
                 'data' => $product,
