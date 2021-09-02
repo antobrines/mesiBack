@@ -7,6 +7,20 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Pré-requis :
+
+Avoir php et composer sur sa machine.
+
+## How to install ?
+
+Après avoir cloné le projet :
+
+- Ajouter un .env
+- Lancer la commande : composer install
+- Démarrer l'application : php artisan serve
+- Accéder à l'application via l'url : http://127.0.0.1:8000/
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
@@ -70,3 +84,5 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 - Ajouter le belongsTo et le hasMane/hasOne dans les modeles
 - Créer un seeder pour créer des données : php artisan make:seed NameTableSeeder
 - Faire la migration avec les données crée : php artisan migrate --seed
+- Faire l'installation des passports : php artisan passport:install
+- Ajouter le client secret id 2 dans le .env
