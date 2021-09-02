@@ -204,7 +204,7 @@ class UserController extends Controller
         //return $user->products()->get();
 
         $data = [
-            'data' => $user->products()->get(),
+            'data' => $user->products()->orderBy('updated_at','desc')->get(),
             'message' => null
         ];
 
